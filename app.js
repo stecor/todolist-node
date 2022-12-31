@@ -2,12 +2,14 @@ const express = require('express')
 const bodyParser = require('body-parser')
 
 const app = express()
-let items = []
+let items = ['Buy Food', 'Cook Food', 'Eat Food']
 
 // setup for ejs
 app.set('view engine', 'ejs')
 
 app.use(bodyParser.urlencoded({ extended: true }))
+
+app.use(express.static('public'))
 
 // show the current date
 app.get('/', function (req, res) {
@@ -22,7 +24,7 @@ app.get('/', function (req, res) {
   let day = today.toLocaleDateString('en-US', options)
 
   // render all res
-  res.render('list', { kindOfDay: day, newListItems: items })
+  res.render('list', { listTitle: day, newListItems: items })
 })
 
 // add Items to the list
