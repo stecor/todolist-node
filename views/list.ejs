@@ -8,5 +8,18 @@
   </head>
   <body>
     <h1>It's a <%= kindOfDay %> !</h1>
+
+    <ul>
+      <li>Buy Food</li>
+      <li>Cook Food</li>
+      <li>Eat Food</li>
+      <% for(let i=0; i<= newListItem.length-1; i++ ){ %>
+      <li><%= newListItem[i] %></li>
+      <% }%>
+    </ul>
+    <form action="/" method="post">
+      <input type="text" name="newItem" placeholder="Insert item" />
+      <button type="submit" name="button">Add</button>
+    </form>
   </body>
 </html>
