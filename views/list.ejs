@@ -10,11 +10,8 @@
     <h1>It's a <%= kindOfDay %> !</h1>
 
     <ul>
-      <li>Buy Food</li>
-      <li>Cook Food</li>
-      <li>Eat Food</li>
-      <% for(let i=0; i<= newListItem.length-1; i++ ){ %>
-      <li><%= newListItem[i] %></li>
+      <% for(let i=0; i< newListItems.length; i++ ){ %>
+      <li><%= newListItems[i] %></li>
       <% }%>
     </ul>
     <form action="/" method="post">
