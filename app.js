@@ -2,7 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 
 const app = express()
-var items = []
+let items = []
 
 // setup for ejs
 app.set('view engine', 'ejs')
@@ -11,15 +11,15 @@ app.use(bodyParser.urlencoded({ extended: true }))
 
 // show the current date
 app.get('/', function (req, res) {
-  var today = new Date()
+  let today = new Date()
 
-  var options = {
+  let options = {
     weekday: 'long',
     day: 'numeric',
     month: 'long',
   }
   // format the date and add to variable
-  var day = today.toLocaleDateString('en-US', options)
+  let day = today.toLocaleDateString('en-US', options)
 
   // render all res
   res.render('list', { kindOfDay: day, newListItems: items })
@@ -28,7 +28,7 @@ app.get('/', function (req, res) {
 // add Items to the list
 app.post('/', function (req, res) {
   //add item value from input to the variable
-  var item = req.body.newItem
+  let item = req.body.newItem
 
   // add item to the array
   items.push(item)
