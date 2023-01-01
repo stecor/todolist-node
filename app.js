@@ -30,24 +30,24 @@ app.get('/', function (req, res) {
 
 // add Items to the list
 app.post('/', function (req, res) {
+  console.log(req.body)
   //add item value from input to the variable
   let item = req.body.newItem
-
-  // add item to the array
-  items.push(item)
-
-  // redirect res
-  res.redirect('/')
+  if (req.body.list === 'Work') {
+    // add item to the workItems array
+    workItems.push(item)
+    // redirect res to work
+    res.redirect('/')
+  } else {
+    // add item to the items array
+    items.push(item)
+    // redirect res to root
+    res.redirect('/')
+  }
 })
 
 app.get('/work', function (req, res) {
   res.render('list', { listTitle: 'Work List', newListItems: workItems })
-})
-
-app.post('/work', function (req, res) {
-  let item = req.body.newItem
-  workItems.push(item)
-  res.redirect('/work')
 })
 
 app.listen(3000, function () {
