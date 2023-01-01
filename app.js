@@ -33,11 +33,11 @@ app.post('/', function (req, res) {
   console.log(req.body)
   //add item value from input to the variable
   let item = req.body.newItem
-  if (req.body.list === 'Work') {
+  if (req.body.list === 'Work List') {
     // add item to the workItems array
     workItems.push(item)
     // redirect res to work
-    res.redirect('/')
+    res.redirect('/work')
   } else {
     // add item to the items array
     items.push(item)
