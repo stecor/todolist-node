@@ -3,8 +3,8 @@ const bodyParser = require('body-parser')
 const date = require(__dirname + '/date.js')
 
 const app = express()
-let items = ['Buy Food', 'Cook Food', 'Eat Food']
-let workItems = []
+const items = ['Buy Food', 'Cook Food', 'Eat Food']
+const workItems = []
 
 // setup for ejs
 app.set('view engine', 'ejs')
@@ -15,7 +15,7 @@ app.use(express.static('public'))
 
 // show the current date
 app.get('/', function (req, res) {
-  let day = date.getDay()
+  const day = date.getDay()
   // render all res
   res.render('list', { listTitle: day, newListItems: items })
 })
@@ -24,13 +24,13 @@ app.get('/', function (req, res) {
 app.post('/', function (req, res) {
   console.log(req.body)
   //add item value from input to the variable
-  let item = req.body.newItem
-  if (req.body.list === 'Work List') {
+  const item = req.body.newItem
+  if (req.body.list === 'Work List' && item !== '') {
     // add item to the workItems array
     workItems.push(item)
     // redirect res to work
     res.redirect('/work')
-  } else {
+  } else if (item !== '') {
     // add item to the items array
     items.push(item)
     // redirect res to root
