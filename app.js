@@ -1,12 +1,15 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
+const {connectToDb,getDb}=require('./db')
 //const date = require(__dirname + '/date.js')
+
+
+
+const app = express()
 
 // setup for ejs
 app.set('view engine', 'ejs')
-
-const app = express()
 
 app.use(bodyParser.urlencoded({ extended: true }))
 
@@ -17,18 +20,53 @@ app.use(express.static('public'))
 
 
 // create new database - connection
-mongoose.connect('mongodb://localhost:27017/todolistDB', { useNewUrlParser: true })
+mongoose.connect('mongodb://localhost:27017/todolistDB',  (err) => {
+  if(err) console.log(err) 
+  else console.log("mongdb is connected");
+ })
+
+
 
 // create schema database
 
-const itemsSchema = {
-  name:String
-}
+const itemsSchema = new mongoose.Schema({
+  name: String
+});
 
 const Item = mongoose.model('Item', itemsSchema)
 
 // create new records
 
+// const item1 = new Item({
+//   name: 'Welcome to your todo list!'
+//   })
+
+// const item2 = new Item({
+//   name: 'Hit the + button!'
+// })
+
+// const item3 = new Item({
+//   name: 'Hit the delete button!' 
+//     })
+
+const defaultItems = [{name: 'Welcome to your todo list!'},{name: 'Hit the + button!'},{name: 'Hit the delete button!'}]
+
+
+// insert records into database
+
+
+
+Item.bulkWrite([
+  {
+    insertOne: {
+      document: {
+        name: 'Welcome to your todo list!',    
+      }
+    }
+  }]).then(res => {
+    // Prints "1 1 1"
+    console.log(res.insertedCount);
+   });
 
 
 
