@@ -20,7 +20,7 @@ app.use(express.static('public'))
 
 
 // create new database - connection
-mongoose.connect('mongodb://localhost:27017/todolistDB',  (err) => {
+mongoose.connect('mongodb://localhost:27017/todolistDB'{useNewUrlParser:true},  (err) => {
   if(err) console.log(err) 
   else console.log("mongdb is connected");
  })
@@ -29,9 +29,9 @@ mongoose.connect('mongodb://localhost:27017/todolistDB',  (err) => {
 
 // create schema database
 
-const itemsSchema = new mongoose.Schema({
+const itemsSchema = {
   name: String
-});
+}
 
 const Item = mongoose.model('Item', itemsSchema)
 
