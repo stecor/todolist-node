@@ -20,7 +20,7 @@ app.use(express.static('public'))
 
 
 // create new database - connection
-mongoose.connect('mongodb://localhost:27017/todolistDB'{useNewUrlParser:true},  (err) => {
+mongoose.connect('mongodb+srv://admin-stefano:120519@cluster0.hjmugum.mongodb.net/todolistDB',{useNewUrlParser:true},  (err) => {
   if(err) console.log(err) 
   else console.log("mongdb is connected");
  })
@@ -37,36 +37,19 @@ const Item = mongoose.model('Item', itemsSchema)
 
 // create new records
 
-// const item1 = new Item({
-//   name: 'Welcome to your todo list!'
-//   })
+const item1 = new Item({
+  name: 'Welcome to your todo list!'
+  })
 
-// const item2 = new Item({
-//   name: 'Hit the + button!'
-// })
+const item2 = new Item({
+  name: 'Hit the + button!'
+})
 
-// const item3 = new Item({
-//   name: 'Hit the delete button!' 
-//     })
+const item3 = new Item({
+  name: 'Hit the delete button!' 
+    })
 
-const defaultItems = [{name: 'Welcome to your todo list!'},{name: 'Hit the + button!'},{name: 'Hit the delete button!'}]
-
-
-// insert records into database
-
-
-
-Item.bulkWrite([
-  {
-    insertOne: {
-      document: {
-        name: 'Welcome to your todo list!',    
-      }
-    }
-  }]).then(res => {
-    // Prints "1 1 1"
-    console.log(res.insertedCount);
-   });
+const defaultItems = [item1,item2,item3]
 
 
 
@@ -77,25 +60,47 @@ Item.bulkWrite([
 app.get('/', function (req, res) {
  // const day = date.getDay()
   // render all res
-  res.render('list', { listTitle: 'Today', newListItems: items })
+  Item.find({}, function (err, foundItems) {
+    if (foundItems.length === 0) {
+      // insert records into database
+
+      Item.insertMany(defaultItems, function (err) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log("Successfully saved default items to DB.");
+        }
+      })
+      res.redirect('/')
+    } else {
+      res.render('list', { listTitle: 'Today', newListItems: foundItems })
+    }
+   
+  })
+  
 })
 
 // add Items to the list
 app.post('/', function (req, res) {
-  console.log(req.body)
-  //add item value from input to the variable
-  const item = req.body.newItem
-  if (req.body.list === 'Work List' && item !== '') {
-    // add item to the workItems array
-    workItems.push(item)
-    // redirect res to work
-    res.redirect('/work')
-  } else if (item !== '') {
-    // add item to the items array
-    items.push(item)
-    // redirect res to root
-    res.redirect('/')
-  }
+
+  const itemName = req.body.newItem
+  const item = new Item({
+    name: itemName
+  })
+  item.save()
+  res.redirect('/')
+})
+
+
+//delete Items from list
+app.post('/delete', function (req, res) {
+  const checkedItemId = req.body.checkbox;
+  Item.findByIdAndRemove(checkedItemId, function (err) {
+    if (!err) {
+      console.log("Successfully deleted checked item.");
+    }
+  })
+  res.redirect('/')
 })
 
 app.get('/work', function (req, res) {
